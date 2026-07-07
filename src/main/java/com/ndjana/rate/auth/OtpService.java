@@ -3,6 +3,7 @@ package com.ndjana.rate.auth;
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -63,7 +64,7 @@ public class OtpService {
             System.out.println("[OTP] To=" + phoneNumber + " code=" + code);
         }
     }
-
+    @Transactional
     public boolean validateOtp(String email, String code) {
         Optional<Otp> opt = otpRepository.findTopByEmailOrderByCreatedAtDesc(email);
         if (opt.isEmpty()) return false;
@@ -76,7 +77,8 @@ public class OtpService {
             return false;
         }
         if (otp.getCode().equals(code)) {
-            // successful - remove all otps for this email
+            //Delete all otp's for this email
+
             otpRepository.deleteAllByEmail(email);
             return true;
         } else {
