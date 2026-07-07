@@ -18,6 +18,7 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final OtpService otpService;
 
     public AuthenticationResponse register(RegisterRequest request) {
         var user = User.builder()
@@ -26,11 +27,17 @@ public class AuthenticationService {
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.USER)
+                .phoneNumber(request.getPhoneNumber())
+                .verified(false)
                 .build();
         repository.save(user);
-        var jwtToken = jwtService.generateToken(user);
+
+        // generate and send OTP
+        otpService.generateAndSendOtp(request.getEmail(), request.getPhoneNumber());
+
         return AuthenticationResponse.builder()
-                .token(jwtToken)
+                .token(null)
+                .message("OTP_SENT")
                 .build();
     }
 
@@ -46,6 +53,19 @@ public class AuthenticationService {
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
+                .message("AUTHENTICATED")
                 .build();
+    }
+
+    public AuthenticationResponse verifyOtp(VerifyOtpRequest request) {
+        boolean ok = otpService.validateOtp(request.getEmail(), request.getCode());
+        if (!ok) {
+            return AuthenticationResponse.builder().token(null).message("INVALID_OTP").build();
+        }
+        var user = repository.findByEmail(request.getEmail()).orElseThrow();
+        user.setVerified(true);
+        repository.save(user);
+        var jwtToken = jwtService.generateToken(user);
+        return AuthenticationResponse.builder().token(jwtToken).message("VERIFIED").build();
     }
 }

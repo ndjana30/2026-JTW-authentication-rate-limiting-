@@ -36,6 +36,12 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    // New fields for phone verification
+    private String phoneNumber;
+
+    @Column(nullable = false)
+    private boolean verified = false;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
