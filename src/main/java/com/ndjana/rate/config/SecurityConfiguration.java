@@ -1,5 +1,8 @@
 package com.ndjana.rate.config;
 
+import com.ndjana.rate.oauth2.CustomOAuth2UserService;
+import com.ndjana.rate.oauth2.OAuth2FailureHandler;
+import com.ndjana.rate.oauth2.OAuth2SuccessHandler;
 import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -17,28 +20,33 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfiguration {
 
-    private  final JwtAuthenticationFilter jwtAuthFilter;
+    private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
+    private final CustomOAuth2UserService customOAuth2UserService;
+    private final OAuth2SuccessHandler oAuth2SuccessHandler;
+    private final OAuth2FailureHandler oAuth2FailureHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http)
-    {
+            throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests((authorize)-> authorize.requestMatchers("/api/v1/auth/**")
-                        .permitAll()
+                .authorizeHttpRequests((authorize) -> authorize
+                        .requestMatchers("/api/v1/auth/**").permitAll()
+                        .requestMatchers("/login/oauth2/**").permitAll()
                         .anyRequest()
                         .authenticated())
-                .sessionManagement((session)->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
+                .oauth2Login(oauth2 -> oauth2
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .oidcUserService(null) // Use standard OpenID Connect
+                                .userService(customOAuth2UserService))
+                        .successHandler(oAuth2SuccessHandler)
+                        .failureHandler(oAuth2FailureHandler))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-
-
-
-
 
         return http.build();
     }
-
 
 }
