@@ -22,19 +22,31 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true,nullable = false)
-    private Long id; // want the id to be unique
+    private Long id;
     @Column(nullable = false)
-    private String firstname;  // want the username to be unique
+    private String firstname;
     @Column(nullable = false)
-    private String lastname;  // want the username to be unique
+    private String lastname;
     @Nullable
     @Column(unique = true)
     private String ApiKey;
     @Column(unique = true,nullable = false)
     public String email;
+    @Column(nullable = true)
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    // OAuth2 fields
+    @Column(nullable = true)
+    private String googleId;
+
+    @Column(nullable = true)
+    private String provider; // "local", "google"
+
+    @Column(nullable = false)
+    @Builder.Default
+    private boolean emailVerified = false;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
