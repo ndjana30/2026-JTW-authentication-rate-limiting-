@@ -35,12 +35,27 @@ public class User implements UserDetails {
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
+//    @Column(nullable = true)
+//    private long biographie_id;
 
     // New fields for phone verification
+    @Column(unique = true,nullable = false)
     private String phoneNumber;
 
     @Column(nullable = false)
     private boolean verified = false;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "profile_id", referencedColumnName = "id")
+    private Profile profile;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "gallerie_id", referencedColumnName = "id")
+    private Gallerie gallerie;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "biographie_id", referencedColumnName = "id")
+    private Biographie biographie;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
