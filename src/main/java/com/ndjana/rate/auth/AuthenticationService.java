@@ -1,11 +1,11 @@
 package com.ndjana.rate.auth;
 
 import com.ndjana.rate.config.JwtService;
-import com.ndjana.rate.models.Profile;
-import com.ndjana.rate.models.Role;
-import com.ndjana.rate.models.User;
+import com.ndjana.rate.models.*;
+import com.ndjana.rate.repositories.GalleryRepo;
 import com.ndjana.rate.repositories.ProfileRepo;
 import com.ndjana.rate.repositories.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,7 +26,9 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final OtpService otpService;
     private final UserRepository userRepository;
+    private final GalleryRepo galleryRepo;
 
+    @Transactional
     public AuthenticationResponse register(RegisterRequest request) {
         var user = User.builder()
                 .firstname(request.getFirstName())
@@ -49,15 +51,23 @@ public class AuthenticationService {
                         .build();
                 profileRepo.save(profile);
                 userz.get().setProfile(profile);
+
+                var gallery = Gallerie.builder()
+                                .user(userz.get())
+                                        .build();
+                userz.get().setGallerie(gallery);
+
+                var bio = Biographie.builder()
+                                .text("Nouvelle(New) BIO")
+                                        .user(userz.get())
+                                                .build();
+                userz.get().setBiographie(bio);
                 userRepository.save(userz.get());
             }
         } catch (Exception e) {
             System.out.println("could not create profile for :"+request.getEmail());
             throw new RuntimeException(e);
         }
-
-
-
 
         // generate and send OTP
         otpService.generateAndSendOtp(request.getEmail(), request.getPhoneNumber());

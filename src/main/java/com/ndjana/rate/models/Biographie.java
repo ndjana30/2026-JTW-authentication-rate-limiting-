@@ -1,12 +1,9 @@
 package com.ndjana.rate.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@Setter
+@Data
 @Table(name = "Biographie")
 @Entity
 @Builder

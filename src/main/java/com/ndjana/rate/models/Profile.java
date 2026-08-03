@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@Setter
+@Data
 @Table(name = "Profile")
 @Entity
 @Builder
