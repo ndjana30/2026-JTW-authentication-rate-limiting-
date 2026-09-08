@@ -26,7 +26,7 @@ This document provides comprehensive documentation for all REST API endpoints de
 - GET Mappings: 2
 - POST Mappings: 5
 
-**Base URL:** `/api/v1/`
+**Base URL:** `https://two026-jtw-authentication-rate-limiting.onrender.com`
 
 ---
 
@@ -53,7 +53,7 @@ This document provides comprehensive documentation for all REST API endpoints de
 - **Response Body:**
   ```json
   {
-    "token": "JWT_TOKEN_STRING"
+    "Message": "OTP_SENT"
   }
   ```
 - **Error Handling:** Returns HTTP 400 if validation fails
