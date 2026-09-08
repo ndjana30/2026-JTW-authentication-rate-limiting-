@@ -17,9 +17,9 @@ FROM eclipse-temurin:11-jre
 WORKDIR /app
 
 # Copy the built JAR from the build stage. Adjust the glob if your artifact name differs.
-COPY --from=build /build/target/*.jar app.jar
+COPY --from=build /build/target/*.jar rate.jar
 
 EXPOSE 8080
 
 # Run the application
-ENTRYPOINT ["java", "-jar", "/app/app.jar"]
+ENTRYPOINT ["java", "-jar", "/app/rate.jar"]
