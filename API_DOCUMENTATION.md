@@ -58,30 +58,7 @@ This document provides comprehensive documentation for all REST API endpoints de
   ```
 - **Error Handling:** Returns HTTP 400 if validation fails
 - **Security:** No authentication required (public endpoint)
-
-#### 2. Authenticate User
-- **Method:** `POST`
-- **Endpoint:** `/api/v1/auth/authenticate`
-- **Handler:** `AuthenticationController.authenticate(AuthenticationRequest request)`
-- **Description:** Authenticates an existing user and returns JWT token
-- **Request Body:**
-  ```json
-  {
-    "email": "string",
-    "password": "string"
-  }
-  ```
-- **Response:** `AuthenticationResponse` (200 OK)
-- **Response Body:**
-  ```json
-  {
-    "token": "JWT_TOKEN_STRING"
-  }
-  ```
-- **Error Handling:** Returns HTTP 401 if credentials are invalid
-- **Security:** No authentication required (public endpoint)
-
-#### 3. Verify OTP
+#### 2. Verify OTP
 - **Method:** `POST`
 - **Endpoint:** `/api/v1/auth/verify-otp`
 - **Handler:** `AuthenticationController.verifyOtp(VerifyOtpRequest request)`
@@ -105,6 +82,30 @@ This document provides comprehensive documentation for all REST API endpoints de
 - **Notes:** Part of Twilio OTP integration for additional security
 
 ---
+
+#### 3. Authenticate User
+- **Method:** `POST`
+- **Endpoint:** `/api/v1/auth/authenticate`
+- **Handler:** `AuthenticationController.authenticate(AuthenticationRequest request)`
+- **Description:** Authenticates an existing user and returns JWT token
+- **Request Body:**
+  ```json
+  {
+    "email": "string",
+    "password": "string"
+  }
+  ```
+- **Response:** `AuthenticationResponse` (200 OK)
+- **Response Body:**
+  ```json
+  {
+    "token": "JWT_TOKEN_STRING"
+  }
+  ```
+- **Error Handling:** Returns HTTP 401 if credentials are invalid
+- **Security:** No authentication required (public endpoint)
+
+
 
 ## Posts/Profile Endpoints
 
