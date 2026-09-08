@@ -18,9 +18,8 @@ RUN ./mvnw -B -DskipTests package
 FROM eclipse-temurin:21-jre
 WORKDIR /app
 
-# Copy the packaged jar from the build stage; the jar name may vary so use wildcard
-ARG JAR_FILE=target/*.jar
-COPY --from=build /workspace/${JAR_FILE} app.jar
+# Copy the packaged jar from the build stage
+COPY --from=build /workspace/target/*.jar app.jar
 
 # Expose the default Spring Boot port
 EXPOSE 8080
