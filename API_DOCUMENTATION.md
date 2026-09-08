@@ -45,7 +45,8 @@ This document provides comprehensive documentation for all REST API endpoints de
     "firstname": "string",
     "lastname": "string",
     "email": "string",
-    "password": "string"
+    "password": "string",
+    "phoneNumber";"String"
   }
   ```
 - **Response:** `AuthenticationResponse` (200 OK)
