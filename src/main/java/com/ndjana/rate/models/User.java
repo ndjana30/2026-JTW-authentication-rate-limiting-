@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -23,10 +24,14 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true,nullable = false)
     private Long id; // want the id to be unique
+    private String Sex;
+    private String country;
+    private String town;
+    private String region;
     @Column(nullable = false)
-    private String firstname;  // want the username to be unique
+    private String firstname;
     @Column(nullable = false)
-    private String lastname;  // want the username to be unique
+    private String lastname;
     @Nullable
     @Column(unique = true)
     private String ApiKey;
@@ -35,6 +40,14 @@ public class User implements UserDetails {
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
+    @Enumerated(EnumType.STRING)
+    private AccountType accountType;
+    private String youtubeLink;
+    private String spotifyLink;
+    private String yearsOfExperience;
+    private String structureName;
+    private String structureWebSite;
+
 //    @Column(nullable = true)
 //    private long biographie_id;
 
@@ -44,6 +57,34 @@ public class User implements UserDetails {
 
     @Column(nullable = false)
     private boolean verified = false;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private List<ProfessionalGenre> professionalGenres= new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private List<ArtistGenre> artistGenres= new ArrayList<>();
+
+    public void addArtistGenres(List<ArtistGenre> ag)
+    {
+        this.artistGenres.addAll(ag);
+
+    }
+
+    public void removeArtistGenre(ArtistGenre ag)
+    {
+        this.artistGenres.remove(ag);
+    }
+
+    public void addProfessionalGenres(List<ProfessionalGenre> pg)
+    {
+        this.professionalGenres.addAll(pg);
+    }
+    public void removeProfessionalGenre(ProfessionalGenre pg)
+    {
+        this.professionalGenres.remove(pg);
+    }
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "profile_id", referencedColumnName = "id")

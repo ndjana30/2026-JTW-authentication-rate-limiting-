@@ -165,6 +165,56 @@ public class Rest {
     }
 
 
+    @PostMapping("modifyArtist-genres")
+    public Object modifyArtistGenres(
+            @RequestParam("musical_genres") List<ArtistGenre> musical_genres
+    )
 
+    {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        assert authentication != null;
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        assert userDetails != null;
+        Optional<User> user  = userRepository.findByEmail(userDetails.getUsername());
+        if (user.isPresent())
+        {
+            try{
+                user.get().addArtistGenres(musical_genres);
+                return new ResponseEntity<>("Artist genre updated", HttpStatus.OK);
+            }
+            catch (Exception e)
+            {
+                return new ResponseEntity<>("Could not modify artist genre, because: "+e.getMessage(),HttpStatus.OK);
+            }
+
+        }
+        return new ResponseEntity<>("User not authenticated",HttpStatus.FORBIDDEN);
+    }
+
+    @PostMapping("modifyProfessional-genres")
+    public Object modifyProfessionalGenres(
+            @RequestParam("professional_genres") List<ProfessionalGenre> professional_genres
+    )
+
+    {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        assert authentication != null;
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        assert userDetails != null;
+        Optional<User> user  = userRepository.findByEmail(userDetails.getUsername());
+        if (user.isPresent())
+        {
+            try{
+                user.get().addProfessionalGenres(professional_genres);
+                return new ResponseEntity<>("Professional genre updated", HttpStatus.OK);
+            }
+            catch (Exception e)
+            {
+                return new ResponseEntity<>("Could not modify Professional genre, because: "+e.getMessage(),HttpStatus.OK);
+            }
+
+        }
+        return new ResponseEntity<>("User not authenticated",HttpStatus.FORBIDDEN);
+    }
 
 }

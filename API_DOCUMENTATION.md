@@ -39,14 +39,22 @@ This document provides comprehensive documentation for all REST API endpoints de
 - **Endpoint:** `/api/v1/auth/register`
 - **Handler:** `AuthenticationController.register(RegisterRequest request)`
 - **Description:** Registers a new user in the system
-- **Request Body:** 
+- **Request Body:**
   ```json
   {
-    "firstname": "string",
-    "lastname": "string",
-    "email": "string",
-    "password": "string",
-    "phoneNumber":"String"
+     "lastName": "String",
+      "email":"String", 
+      "password": "String",
+      "firstName": "String",
+      "phoneNumber": "String",
+      "sex": "String",
+      "country": "String",
+      "region": "String",
+      "town": "String",
+      "accountType": "AccountType",
+      "youtubeLink": "String",
+      "spotifyLink": "String",
+      "yearsOfExperience": "String"
   }
   ```
 - **Response:** `AuthenticationResponse` (200 OK)
@@ -180,6 +188,33 @@ This document provides comprehensive documentation for all REST API endpoints de
 - **Authentication Method:** Extracts from `SecurityContextHolder`
 - **Notes:** Converts media byte arrays to string format for response
 
+#### 8. Add Artist Genres
+- **Method:** `POST`
+- **Endpoint:** `/api/v1/posts/modifyArtist-genres`
+- **Handler:** `Rest.ViewGallery()`
+- **Description:** Retrieves all media files from user's gallery
+- **Request Parameters:** "musical_genres":"List<ArtistGenre>"
+- **Response:** HTTP 200 OK with list of media objects
+- **Response Body:** `String` (Artist genre updated)
+- **Error Handling:**
+  - Returns HTTP 403 "User not present" if user not found
+- **Security:** Requires JWT authentication
+- **Authentication Method:** Extracts from `SecurityContextHolder`
+- **Notes:** Converts media byte arrays to string format for response
+
+#### 9. Add Structure Genres
+- **Method:** `POST`
+- **Endpoint:** `/api/v1/posts/modifyProfessional-genres`
+- **Handler:** `Rest.ViewGallery()`
+- **Description:** Retrieves all media files from user's gallery
+- **Request Parameters:** "professional_genres":"List<ProfessionalGenre>"
+- **Response:** HTTP 200 OK with list of media objects
+- **Response Body:** `String` (Professional Genre Updated)
+- **Error Handling:**
+  - Returns HTTP 403 "User not present" if user not found
+- **Security:** Requires JWT authentication
+- **Authentication Method:** Extracts from `SecurityContextHolder`
+- **Notes:** Converts media byte arrays to string format for response
 ---
 
 ## Test Endpoints

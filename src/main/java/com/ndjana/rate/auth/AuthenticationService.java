@@ -37,6 +37,13 @@ public class AuthenticationService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.USER)
                 .phoneNumber(request.getPhoneNumber())
+                .accountType(request.getAccountType())
+                .region(request.getRegion())
+                .country(request.getCountry())
+                .town(request.getTown())
+                .spotifyLink(request.getSpotifyLink())
+                .youtubeLink(request.getYoutubeLink())
+                .Sex(request.getSex())
                 .verified(false)
                 .build();
         repository.save(user);
