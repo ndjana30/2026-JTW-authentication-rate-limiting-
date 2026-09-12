@@ -112,34 +112,6 @@ public class Rest {
         return new ResponseEntity<>("User not present", HttpStatus.FORBIDDEN);
     }
 
-    /*@PostMapping("gallery-modify")
-    @Transactional
-    public Object modifyGallery(@RequestParam ("medias") MultipartFile[] data) throws IOException {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        assert authentication != null;
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        assert userDetails != null;
-        Optional<User> user  = userRepository.findByEmail(userDetails.getUsername());
-        if(user.isPresent())
-        {
-            Gallerie gallerie = user.get().getGallerie();
-            System.out.println("Initial gallery is:  " + gallerie.getMedias() + "With ID "+gallerie.getId());
-            for(MultipartFile file: data)
-            {
-                var media = Media.builder()
-                        .data(file.getBytes())
-                        .build();
-                gallerie.addMedia(media);
-                galleryRepo.save(gallerie);
-                return new ResponseEntity<>("Gallery Updated", HttpStatus.OK);
-            }
-
-
-        }
-        return new ResponseEntity<>("User not present",HttpStatus.FORBIDDEN);
-    }*/
-
-
     @GetMapping("gallery-view")
     public Object ViewGallery() throws IOException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
